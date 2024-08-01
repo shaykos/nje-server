@@ -7,7 +7,7 @@ create-nje-server is a template creation tool for your server with Node.js and E
 To create a new server project, simply run:
 
 ```bash
-npm create nje-server
+npx create nje-server
 ```
 
 This will prompt you with a series of questions to customize your project. You can select the options that best fit your needs, such as MongoDB, SQL, and Handlebars.
