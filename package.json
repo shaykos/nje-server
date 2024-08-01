@@ -5,8 +5,7 @@
   "type": "module",
   "main": "index.js",
   "bin": {
-    "nje": "index.js",
-    "ctpl": "index.js"
+    "nje": "index.js"
   },
   "engines": {
     "node": "^18.0.0 || >=20.0.0"
