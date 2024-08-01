@@ -1,4 +1,5 @@
 import colors from 'colors';
+import figures from 'figures';
 import path from "path";
 import { fileURLToPath } from "url";
 import { cwd } from "process";
@@ -29,15 +30,16 @@ export async function build({ name, options }) {
         }
 
         if (!fs.existsSync(targetDir)) {
-            console.log("Target directory doesn't exist");
-            console.log("Creating directory...");
             fs.mkdirSync(targetDir, { recursive: true });
-            console.log("Finished creating directory");
             await copyFilesAndDirectories(sourceDir, targetDir);
             await updatePackageJson(targetDir, name, options);
-            console.log(`Finished generating your project ${name}`);
-            console.log(`cd ${name}`);
-            console.log(`npm install`);
+
+            console.log(colors.green(`${figures.tick} Finished generating your project ${colors.bold(name)}`));
+            console.log(`\n\n${colors.white.underline('Please follow the steps below:')}\n`);
+            console.log(`\t1. Navigate to your project using: ${colors.underline('cd ' + name)}`);            
+            console.log(`\t2. Install dependencies: ${colors.green('npm install')}`);
+            console.log(`\t3. Open VS Code: ${colors.blue('code ./')}`);
+            console.log(`\n${figures.smiley} Happy Coding...\n`);
         } else {
             throw new Error("Target directory already exist!");
         }

@@ -1,6 +1,6 @@
-# Nje-Server
+# Create nje server
 
-Nje-Server is a template creation tool for your server with Node.js and Express. It allows you to quickly set up a new server project with the options you need.
+create-nje-server is a template creation tool for your server with Node.js and Express. It allows you to quickly set up a new server project with the options you need.
 
 ## Usage
 

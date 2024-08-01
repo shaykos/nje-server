@@ -1,5 +1,5 @@
 {
-  "name": "nje-server",
+  "name": "create-nje-server",
   "version": "1.0.0",
   "description": "template creation for your server with nodejs and express",
   "type": "module",
@@ -27,6 +27,7 @@
     "prompts": "^2.4.2"
   },
   "dependencies": {
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "figures": "^6.1.0"
   }
 }

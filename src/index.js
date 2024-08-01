@@ -29,7 +29,6 @@ const questions = [
 
 (async () => {
     const response = await prompts(questions);
-    console.log(response);
     build(response);
 })();
 
