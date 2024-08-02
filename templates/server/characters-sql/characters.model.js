@@ -1,4 +1,4 @@
-import { addCharacter, getCharacters } from "./character.db.js";
+import { addCharacter, getCharacters } from "./characters.db.js";
 
 export async function getAll(id) {
     let query = `SELECT * FROM Characters`;

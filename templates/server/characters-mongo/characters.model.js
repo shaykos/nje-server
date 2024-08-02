@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { addCharacter, getCharacters, updateDoc } from "./character.db.js";
+import { addCharacter, getCharacters, updateDoc } from "./characters.db.js";
 
 export async function getAll() {
     return await getCharacters();

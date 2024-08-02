@@ -19,24 +19,44 @@ import {
 export async function build({ name, options }) {
     try {
         const targetDir = path.join(cwd(), name);
-        const sourceDir = path.resolve(
-            fileURLToPath(import.meta.url),
-            "../../templates/server"
-        );
+        let sourceDir;
 
+        // Check if there are no options selected
         if (options.length == 0) {
             console.log(colors.red("No options selected"));
             return;
         }
 
+        // Check if TypeScript is selected and set the source directory
+        if (options.ts) {
+            sourceDir = path.resolve(
+                fileURLToPath(import.meta.url),
+                "../../templates/server-ts"
+            );
+        }
+        else {
+            sourceDir = path.resolve(
+                fileURLToPath(import.meta.url),
+                "../../templates/server"
+            );
+        }
+
+        // Create the target directory if it doesn't exist and copy files and directories
         if (!fs.existsSync(targetDir)) {
             fs.mkdirSync(targetDir, { recursive: true });
+
+            // Copy files and directories from source to target directory
             await copyFilesAndDirectories(sourceDir, targetDir);
+            // Update package.json with selected options
             await updatePackageJson(targetDir, name, options);
+            // Update main.js with selected options
+            await updateMainJs(targetDir, options);
+            // Update folders based on selected options
+            await updateFolders(targetDir, options);
 
             console.log(colors.green(`${figures.tick} Finished generating your project ${colors.bold(name)}`));
             console.log(`\n\n${colors.white.underline('Please follow the steps below:')}\n`);
-            console.log(`\t1. Navigate to your project using: ${colors.underline('cd ' + name)}`);            
+            console.log(`\t1. Navigate to your project using: ${colors.underline('cd ' + name)}`);
             console.log(`\t2. Install dependencies: ${colors.green('npm install')}`);
             console.log(`\t3. Open VS Code: ${colors.blue('code ./')}`);
             console.log(`\n${figures.smiley} Happy Coding...\n`);
@@ -98,16 +118,13 @@ async function updatePackageJson(targetDir, name, options) {
                 "express-handlebars": "^7.1.3",
             }
         }
-        
+
 
         await writeFile(
             packageJsonPath,
             JSON.stringify(packageJson, null, 2),
             "utf8"
         );
-
-        updateMainJs(targetDir, options);
-        updateFolders(targetDir, options);
 
     } catch (err) {
         console.log(err.message);
@@ -152,23 +169,23 @@ async function updateMainJs(targetDir, options) {
 
 async function updateFolders(targetDir, options) {
 
-    if(!options.includes("Handelbars")) {
+    if (!options.includes("Handelbars")) {
         await rm(path.join(targetDir, 'views'), { recursive: true, force: true });
     }
 
-    if(!options.includes("MongoDB")) {
+    if (!options.includes("MongoDB")) {
         await rm(path.join(targetDir, 'characters-mongo'), { recursive: true, force: true });
     }
 
-    if(!options.includes("SQL")) {
+    if (!options.includes("SQL")) {
         await rm(path.join(targetDir, 'characters-sql'), { recursive: true, force: true });
     }
 
-    if(options.includes("MongoDB") && !options.includes("SQL")) {
+    if (options.includes("MongoDB") && !options.includes("SQL")) {
         await rename(path.join(targetDir, 'characters-mongo'), path.join(targetDir, 'characters'));
     }
 
-    if(options.includes("SQL") && !options.includes("MongoDB")) {
+    if (options.includes("SQL") && !options.includes("MongoDB")) {
         await rename(path.join(targetDir, 'characters-sql'), path.join(targetDir, 'characters'));
     }
 }

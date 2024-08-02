@@ -1,4 +1,5 @@
 import { MongoClient, ObjectId } from "mongodb";
+import { Character } from "./characters.type";
 
 const DB_INFO = {
     host: process.env.CONNECTION_STRING,
@@ -6,7 +7,7 @@ const DB_INFO = {
     collection: 'Characters'
 }
 
-export async function getCharacters(query = {}, projection = {}) {
+export async function getCharacters(query = {}, projection = {}): Promise<Character[]> {
     let mongo = new MongoClient(DB_INFO.host);
     try {
         await mongo.connect();
@@ -19,7 +20,7 @@ export async function getCharacters(query = {}, projection = {}) {
     }
 }
 
-export async function addCharacter(character) {
+export async function addCharacter(character: Character) {
     let mongo = new MongoClient(DB_INFO.host);
     try {
         await mongo.connect();
@@ -32,7 +33,7 @@ export async function addCharacter(character) {
     }
 }
 
-export async function updateDoc(id, character) {
+export async function updateDoc(id: string, character: Character) {
     let mongo = new MongoClient(DB_INFO.host);
     try {
         await mongo.connect();
@@ -48,7 +49,7 @@ export async function updateDoc(id, character) {
     }
 }
 
-export async function getDocCount(query = {}) {
+export async function getDocCount(query = {}): Promise<number> {
     let mongo = new MongoClient(DB_INFO.host);
     try {
         await mongo.connect();
