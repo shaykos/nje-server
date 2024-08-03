@@ -22,6 +22,5 @@ export async function loadCharactersPage(req, res) {
       actor: "Carry Fisher"
     }
   ]
-  console.log(characters)
   res.render('./pages/characters', { characters });
 }

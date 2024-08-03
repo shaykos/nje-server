@@ -18,8 +18,6 @@ import {
 
 export async function build({ name, options }) {
     try {
-        const targetDir = path.join(cwd(), name);
-        let sourceDir;
 
         // Check if there are no options selected
         if (options.length == 0) {
@@ -27,19 +25,13 @@ export async function build({ name, options }) {
             return;
         }
 
-        // Check if TypeScript is selected and set the source directory
-        if (options.ts) {
-            sourceDir = path.resolve(
-                fileURLToPath(import.meta.url),
-                "../../templates/server-ts"
-            );
-        }
-        else {
-            sourceDir = path.resolve(
-                fileURLToPath(import.meta.url),
-                "../../templates/server"
-            );
-        }
+        const targetDir = path.join(cwd(), name);
+
+        const sourceDir = path.resolve(
+            fileURLToPath(import.meta.url),
+            "../../templates/server"
+        );
+
 
         // Create the target directory if it doesn't exist and copy files and directories
         if (!fs.existsSync(targetDir)) {
@@ -49,16 +41,16 @@ export async function build({ name, options }) {
             await copyFilesAndDirectories(sourceDir, targetDir);
             // Update package.json with selected options
             await updatePackageJson(targetDir, name, options);
-            // Update main.js with selected options
-            await updateMainJs(targetDir, options);
+            // Update index.js with selected options
+            await updateIndexJs(targetDir, options);
             // Update folders based on selected options
             await updateFolders(targetDir, options);
 
             console.log(colors.green(`${figures.tick} Finished generating your project ${colors.bold(name)}`));
             console.log(`\n\n${colors.white.underline('Please follow the steps below:')}\n`);
-            console.log(`\t1. Navigate to your project using: ${colors.underline('cd ' + name)}`);
-            console.log(`\t2. Install dependencies: ${colors.green('npm install')}`);
-            console.log(`\t3. Open VS Code: ${colors.blue('code ./')}`);
+            console.log(`\t1. Navigate to your project using: ${colors.underline.blue('cd ' + name)}`);
+            console.log(`\t2. Install dependencies: ${colors.underline.blue('npm install')}`);
+            console.log(`\t3. Open in your preferred editor or run: ${colors.underline.blue('npm run dev')} to start the server`);
             console.log(`\n${figures.smiley} Happy Coding...\n`);
         } else {
             throw new Error("Target directory already exist!");
@@ -131,8 +123,8 @@ async function updatePackageJson(targetDir, name, options) {
     }
 }
 
-async function updateMainJs(targetDir, options) {
-    const mainTxtPath = path.join(targetDir, "main.txt");
+async function updateIndexJs(targetDir, options) {
+    const mainTxtPath = path.join(targetDir, "index.txt");
     try {
         const mainTxtData = await readFile(mainTxtPath, "utf8");
         let mainTxt = mainTxtData
@@ -161,7 +153,7 @@ async function updateMainJs(targetDir, options) {
         }
 
         await writeFile(mainTxtPath, mainTxt, "utf8");
-        await rename(path.join(targetDir, "main.txt"), path.join(targetDir, "main.js"));
+        await rename(path.join(targetDir, "index.txt"), path.join(targetDir, "index.js"));
     } catch (err) {
         console.log(err.message);
     }
