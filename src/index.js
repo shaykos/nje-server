@@ -9,12 +9,6 @@ const questions = [
         initial: "my-server",
         format: (val) => val.toLowerCase().split(" ").join("-")
     },
-    // {
-    //     type: 'confirm',
-    //     name: 'ts',
-    //     message: 'Support Typescript?',
-    //     initial: true
-    // },
     {
         type: 'multiselect',
         name: 'options',
