@@ -70,7 +70,7 @@ async function copyFilesAndDirectories(source, destination) {
         const stat = await lstat(sourcePath);
 
         if (stat.isDirectory()) {
-            // Create the directory in the destination
+            // Create the directory in selected destination 
             await mkdir(destPath);
 
             // Recursively copy files and subdirectories
